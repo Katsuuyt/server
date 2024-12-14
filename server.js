@@ -16,8 +16,8 @@ const upload = multer({
 // Endpoint untuk upload
 app.post('/api/upload', upload.single('file'), (req, res) => {
     const file = req.file;
-    const shortLink = `https://yourdomain.com/${file.originalname}`; // Ganti dengan domainmu
-    const longLink = `https://yourdomain.com/uploads/${file.originalname}`; // Ganti dengan domainmu
+    const shortLink = `server.katsuazaa.web.id/${file.originalname}`; // Ganti dengan domainmu
+    const longLink = `server.katsuazaa.web.id/uploads/${file.originalname}`; // Ganti dengan domainmu
 
     const uploadsDir = path.join(process.cwd(), 'uploads');
     if (!fs.existsSync(uploadsDir)) {
