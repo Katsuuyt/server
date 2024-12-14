@@ -1,8 +1,9 @@
-import multer from 'multer';
-import nextConnect from 'next-connect';
-import fs from 'fs';
-import path from 'path';
+const multer = require('multer');
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
 
+const app = express();
 const upload = multer({
     storage: multer.diskStorage({
         destination: './uploads',
@@ -12,16 +13,8 @@ const upload = multer({
     }),
 });
 
-const apiRoute = nextConnect({
-    onError(err, req, res) {
-        res.status(501).json({ error: `Sorry something Happened! ${err.message}` });
-    },
-    onNoMatch(req, res) {
-        res.status(405).json({ error: `Method ${req.method} Not Allowed` });
-    },
-});
-
-apiRoute.use(upload.single('file')).post((req, res) => {
+// Endpoint untuk upload
+app.post('/api/upload', upload.single('file'), (req, res) => {
     const file = req.file;
     const shortLink = `https://yourdomain.com/${file.originalname}`; // Ganti dengan domainmu
     const longLink = `https://yourdomain.com/uploads/${file.originalname}`; // Ganti dengan domainmu
@@ -38,4 +31,8 @@ apiRoute.use(upload.single('file')).post((req, res) => {
     });
 });
 
-export default apiRoute;
+// Mulai server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server berjalan di port ${PORT}`);
+});
